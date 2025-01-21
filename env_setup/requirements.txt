@@ -1,0 +1,2 @@
+-e /p/project/hclimrep/langguth1/ai-models/
+-e /p/project/hclimrep/langguth1/ai-models-panguweather/
