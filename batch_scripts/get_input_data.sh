@@ -41,7 +41,7 @@ LOGFILE=${BASE_DIR}/logs/download_data_${date}T${time}_${model}.log
 if [ "$data_source" == "cds"  ]; then
    echo "Download input data for ${date} ${time} UTC of model ${model} via CDS."
   
-   ai-models --assets ${BASE_DIR}/model_assets/ --load_input_only --input cds --date ${date} --time ${time} ${model} 2>&1 | tee ${LOGFILE}
+   ai-models --assets ${BASE_DIR}/model_assets/ --load_input_only -input_dir ${input_dir} --input cds --date ${date} --time ${time} ${model} 2>&1 | tee ${LOGFILE}
 elif [ "$data_source" == "mars"  ]; then
    echo "Download input data for yesterday 1200 UTC of model {model} via MARS."
    
