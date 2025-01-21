@@ -33,12 +33,20 @@ ENV_NAME=$1
 SETUP_DIR=$(pwd)
 SETUP_DIR_NAME="$(basename "${SETUP_DIR}")"
 BASE_DIR="$(dirname "${SETUP_DIR}")"
+
+# create other directories if needed
+mkdir -p ${BASE_DIR}/logs
+mkdir -p ${BASE_DIR}/input_data
+mkdir -p ${BASE_DIR}/forecast_output
+mkdir -p ${BASE_DIR}/model_assets
+
 # set-up directory for virtual environment
 if [[ -z "$2" ]]; then
     VENV_BASE_DIR="${BASE_DIR}/virtual_envs/"
 else
     VENV_BASE_DIR="$2/virtual_envs/"
 fi
+
 echo "${SCR_SETUP}Virtual environemnt will be set up under ${VENV_BASE_DIR}..."
 VENV_DIR="${VENV_BASE_DIR}/${ENV_NAME}"
 ATMOREP_DIR="$(dirname "${BASE_DIR}")"
