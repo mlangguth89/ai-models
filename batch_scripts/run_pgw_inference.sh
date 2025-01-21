@@ -1,5 +1,5 @@
 #!/bin/bash -x
-#SBATCH --account=deepacf
+#SBATCH --account=hclimrep
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 ##SBATCH --ntasks-per-node=1
@@ -23,10 +23,11 @@ BASE_DIR=$(dirname "${WORK_DIR}")
 
 # Name of virtual environment
 VENV_DIR=${BASE_DIR}/virtual_envs/
-VIRT_ENV_NAME=venv_jwb_test
+VIRT_ENV_NAME=venv_jwb  			# !!! ADAPT HERE !!!
 
+echo ${VENV_DIR}/${VIRT_ENV_NAME}
 # Loading mouldes
-source ../env_setup/modules_jsc.sh
+source ${BASE_DIR}/env_setup/modules_jsc.sh
 # Activate virtual environment if needed (and possible)
 if [ -z ${VIRTUAL_ENV} ]; then
    if [[ -f ${VENV_DIR}/${VIRT_ENV_NAME}/bin/activate ]]; then
@@ -39,10 +40,10 @@ if [ -z ${VIRTUAL_ENV} ]; then
 fi
 
 
-# parameters
+# parameters 					!!! ADAPT HERE !!!
 output_dir=${BASE_DIR}/forecast_output/
 model=panguweather                                  # only panguweather is supported for now
 grb_file=${BASE_DIR}/input_data/pgw_input_20230110T1200.grib  # as obtained from get_input_data.sh 
 
 # run job
-srun ai-models --assets ./model_assets/ --file ${grb_file} --path ${output_dir}/${model}'-out-{step}.grib' ${model}
+srun ai-models --assets ${BASE_DIR}/model_assets/ --file ${grb_file} --path ${output_dir}/${model}'-out-{step}.grib' ${model}
