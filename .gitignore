@@ -182,4 +182,10 @@ _version.py
 # ignore virtual environments, model_assets and inference output
 virtual_envs/
 model_assets/
-inference_output/
+forecast_output/
+logs/
+
+# ignore logfiles from batch-scripts
+*-out.*
+*-err.*
+
