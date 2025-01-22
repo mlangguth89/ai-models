@@ -7,6 +7,7 @@
 
 import argparse
 import logging
+from pathlib import Path
 import os
 import shlex
 import sys
@@ -250,6 +251,18 @@ def _main(argv):
         default=(os.environ.get("AI_MODELS_REMOTE", "0") == "1"),
     )
 
+    parser.add_argument("--load_input_only", "-load_input", help="Only load input data of model for later execution",
+                        action="store_true", 
+                        dest="load_input_only",
+                        default=False)
+
+    parser.add_argument("--input_directory", "-input_dir",
+                        help="Directory to store input data of model for later execution, cf. --load_input_only/-load_input",
+                        dest="input_dir",
+                        type=Path,
+                        default=Path("./")
+                        )
+
     args, unknownargs = parser.parse_known_args(argv)
 
     if args.version:
@@ -316,7 +329,9 @@ def run(cfg: dict, model_args: list):
 
         model = RemoteModel(**cfg, model_args=model_args)
     else:
+        LOG.info(f"Load model {cfg["model"]} model...")
         model = load_model(cfg["model"], **cfg, model_args=model_args)
+
 
     if cfg["fields"]:
         model.print_fields()
@@ -331,8 +346,13 @@ def run(cfg: dict, model_args: list):
         model.print_assets_list()
         sys.exit(0)
 
+    if cfg["load_input_only"]:
+        model.cache_input_data()
+        sys.exit(0)
+
     try:
         model.run()
+
     except FileNotFoundError as e:
         LOG.exception(e)
         LOG.error(

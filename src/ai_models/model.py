@@ -492,6 +492,9 @@ class Model:
         # Overriden in subclasses if needed
         pass
 
+    def cache_input_data(self):
+        raise NotImplementedError(f"The model class {self.__class__.__name__} has no method to cache the input data to disk.")
+
     def peek_into_checkpoint(self, path):
         return peek(path)
 
